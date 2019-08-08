@@ -14,6 +14,7 @@ import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
 import com.recall.uaplogin.service.FloatViewService
+import com.recall.uaplogin.service.LocalService
 import com.recall.uaplogin.utils.ContactsUtil
 
 
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        startService(Intent(this, LocalService::class.java))
     }
 
     override fun onResume() {
@@ -104,8 +106,7 @@ class MainActivity : AppCompatActivity() {
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
             } else {
-                val intent = Intent(this@MainActivity, FloatViewService::class.java)
-                startService(intent)
+                startService(Intent(this@MainActivity, FloatViewService::class.java))
                 goHome()
             }
         }

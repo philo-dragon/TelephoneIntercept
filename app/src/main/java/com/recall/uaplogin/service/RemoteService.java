@@ -8,7 +8,6 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.Toast;
 import com.android.internal.telephony.IMyAidlInterface;
 
 /**
@@ -31,7 +30,6 @@ public class RemoteService extends Service {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            Toast.makeText(RemoteService.this,"链接断开，重新启动 LocalService",Toast.LENGTH_LONG).show();
             startService(new Intent(RemoteService.this,LocalService.class));
             bindService(new Intent(RemoteService.this,LocalService.class),connection, Context.BIND_IMPORTANT);
         }
@@ -42,7 +40,6 @@ public class RemoteService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this,"RemoteService 启动",Toast.LENGTH_LONG).show();
         bindService(new Intent(this,LocalService.class),connection,Context.BIND_IMPORTANT);
         return START_STICKY;
     }
