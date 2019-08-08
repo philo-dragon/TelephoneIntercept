@@ -30,6 +30,22 @@ class MainActivity : AppCompatActivity() {
         requestPermission()
     }
 
+    override fun onResume() {
+        super.onResume()
+        val permissions = SoulPermission.getInstance()
+            .checkPermissions(Manifest.permission.READ_CALL_LOG, Manifest.permission.CALL_PHONE)
+        var hasAllPermission = true
+        for (permission in permissions) {
+            if(!permission.isGranted){
+                hasAllPermission
+                break
+            }
+        }
+        if(hasAllPermission){
+            getFloatWindowPersimmion()
+        }
+    }
+
     private fun requestPermission() {
         SoulPermission.getInstance().checkAndRequestPermissions(
             Permissions.build(Manifest.permission.READ_CALL_LOG, Manifest.permission.CALL_PHONE),
