@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
@@ -31,8 +32,14 @@ public class RemoteService extends Service {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            startService(new Intent(RemoteService.this,LocalService.class));
-            bindService(new Intent(RemoteService.this,LocalService.class),connection, Context.BIND_IMPORTANT);
+            Intent intent = new Intent(RemoteService.this, LocalService.class);
+            if (Build.VERSION.SDK_INT >= 26) {
+                //适配8.0机制
+                startForegroundService(intent);
+            } else {
+                startService(intent);
+            }
+            bindService(intent,connection, Context.BIND_IMPORTANT);
             createMainActivity();
         }
     };
@@ -50,6 +57,19 @@ public class RemoteService extends Service {
     public IBinder onBind(Intent intent) {
         mBinder = new MyBinder();
         return mBinder;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Intent intent = new Intent(RemoteService.this, LocalService.class);
+        if (Build.VERSION.SDK_INT >= 26) {
+            //适配8.0机制
+            startForegroundService(intent);
+        } else {
+            startService(intent);
+        }
+        bindService(intent,connection, Context.BIND_IMPORTANT);
     }
 
     private class MyBinder extends IMyAidlInterface.Stub{
