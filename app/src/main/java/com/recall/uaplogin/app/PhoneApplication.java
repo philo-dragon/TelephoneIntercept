@@ -2,6 +2,7 @@ package com.recall.uaplogin.app;
 
 import android.app.Application;
 import android.content.IntentFilter;
+import com.qw.soul.permission.SoulPermission;
 import com.recall.uaplogin.receiver.PhoneReceiver;
 
 public class PhoneApplication extends Application {
@@ -12,6 +13,7 @@ public class PhoneApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sApplication = this;
+        SoulPermission.init(this);
         registerReceiver();
     }
 
