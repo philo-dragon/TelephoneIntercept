@@ -7,9 +7,7 @@ import android.provider.CallLog;
 import com.recall.uaplogin.app.PhoneApplication;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ContactsUtil {
 
@@ -43,7 +41,7 @@ public class ContactsUtil {
                 , null, null, CallLog.Calls.DEFAULT_SORT_ORDER// 按照时间逆序排列，最近打的最先显示
         );
         // 3.通过Cursor获得数据
-        List<String> list = new ArrayList<>();
+        Set<String> set = new HashSet<>();
         while (cursor.moveToNext()) {
             String name = cursor.getString(cursor.getColumnIndex(CallLog.Calls.CACHED_NAME));
             String number = MobileUtil.getNumber(cursor.getString(cursor.getColumnIndex(CallLog.Calls.NUMBER)));
@@ -56,12 +54,12 @@ public class ContactsUtil {
                 case CallLog.Calls.INCOMING_TYPE:
                     typeString = "打入";
                     if(duration > DEFAULT_DURATION){
-                        list.add(number);
+                        set.add(number);
                     }
                     break;
                 case CallLog.Calls.OUTGOING_TYPE:
                     typeString = "打出";
-                    list.add(number);
+                    set.add(number);
                     break;
                 case CallLog.Calls.MISSED_TYPE:
                     typeString = "未接";
@@ -77,9 +75,8 @@ public class ContactsUtil {
             map.put("type", typeString);
             list.add(map);*/
         }
-        return list;
+        return new ArrayList<>(set);
     }
-
 
 
     public static boolean constantContacts(String phoneNo) {

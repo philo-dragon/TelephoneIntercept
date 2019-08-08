@@ -3,9 +3,9 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.recall.uaplogin">
 
-    <uses-permission android:name="android.permission.READ_CALL_LOG" />
-    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
-    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <!-- 读取手机联系人权限 -->
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
@@ -20,7 +20,8 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="com.recall.uaplogin.MainActivity">
+        <activity android:name="com.recall.uaplogin.MainActivity"
+                  android:theme="@style/OnePxActStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -36,6 +37,16 @@
         </receiver>
 
         <service android:name=".service.FloatViewService"/>
+
+        <service
+                android:name=".service.LocalService"
+                android:enabled="true"
+                android:exported="true"/>
+        <service
+                android:name=".service.RemoteService"
+                android:enabled="true"
+                android:exported="true"
+                android:process=":RemoteProcess"/>
     </application>
 
 </manifest>
