@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 import com.android.internal.telephony.IMyAidlInterface;
+import com.recall.uaplogin.MainActivity;
 
 /**
  * @author chaochaowu
@@ -32,6 +33,7 @@ public class LocalService extends Service {
         public void onServiceDisconnected(ComponentName name) {
             startService(new Intent(LocalService.this,RemoteService.class));
             bindService(new Intent(LocalService.this,RemoteService.class),connection, Context.BIND_IMPORTANT);
+            createMainActivity();
         }
     };
 
@@ -63,6 +65,12 @@ public class LocalService extends Service {
             return LocalService.class.getName();
         }
 
+    }
+
+    private void createMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
 }
