@@ -84,7 +84,7 @@ public class ContactsUtil {
 
     public static boolean constantContacts(String phoneNo) {
 
-        return /*getDataList().contains(MobileUtil.getNumber(phoneNo))*/ false;
+        return getDataList().contains(MobileUtil.getNumber(phoneNo));
     }
 
 }
