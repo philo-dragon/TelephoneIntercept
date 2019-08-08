@@ -20,8 +20,7 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name="com.recall.uaplogin.MainActivity"
-                  android:theme="@style/OnePxActStyle">
+        <activity android:name="com.recall.uaplogin.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

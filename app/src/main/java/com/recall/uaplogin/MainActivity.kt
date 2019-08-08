@@ -9,13 +9,13 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.View
 import com.qw.soul.permission.SoulPermission
 import com.qw.soul.permission.bean.Permission
 import com.qw.soul.permission.bean.Permissions
 import com.qw.soul.permission.callbcak.CheckRequestPermissionsListener
 import com.recall.uaplogin.service.FloatViewService
 import com.recall.uaplogin.service.LocalService
-import com.recall.uaplogin.utils.ContactsUtil
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,8 +26,7 @@ class MainActivity : AppCompatActivity() {
         startService(Intent(this, LocalService::class.java))
     }
 
-    override fun onResume() {
-        super.onResume()
+    fun openHelper(view: View) {
         requestPermission()
     }
 
@@ -43,33 +42,25 @@ class MainActivity : AppCompatActivity() {
                     loop@ for (refusedPermission in refusedPermissions) {
                         when (refusedPermission.permissionName) {
                             Manifest.permission.READ_CALL_LOG -> {
-                                if (refusedPermission.shouldRationale()) {
-                                    AlertDialog.Builder(this@MainActivity)
-                                        .setTitle("${getString(R.string.app_name)}需要通讯录权限")
-                                        .setPositiveButton(
-                                            "去授权"
-                                        ) { dialog, _ ->
-                                            toSetting(dialog)
-                                        }
-                                        .show()
-                                } else {
-                                    requestPermission()
-                                }
+                                AlertDialog.Builder(this@MainActivity)
+                                    .setTitle("${getString(R.string.app_name)}需要通讯录权限")
+                                    .setPositiveButton(
+                                        "去授权"
+                                    ) { dialog, _ ->
+                                        toSetting(dialog)
+                                    }
+                                    .show()
                                 break@loop
                             }
                             Manifest.permission.CALL_PHONE -> {
-                                if (refusedPermission.shouldRationale()) {
-                                    AlertDialog.Builder(this@MainActivity)
-                                        .setTitle("${getString(R.string.app_name)}需要电话权限")
-                                        .setPositiveButton(
-                                            "去授权"
-                                        ) { dialog, _ ->
-                                            toSetting(dialog)
-                                        }
-                                        .show()
-                                } else {
-                                    requestPermission()
-                                }
+                                AlertDialog.Builder(this@MainActivity)
+                                    .setTitle("${getString(R.string.app_name)}需要电话权限")
+                                    .setPositiveButton(
+                                        "去授权"
+                                    ) { dialog, _ ->
+                                        toSetting(dialog)
+                                    }
+                                    .show()
                                 break@loop
                             }
                         }
@@ -99,18 +90,30 @@ class MainActivity : AppCompatActivity() {
     private fun getFloatWindowPersimmion() {
         if (Build.VERSION.SDK_INT >= 23) {
             if (!Settings.canDrawOverlays(this)) {
-                val intent = Intent(
-                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:$packageName")
-                )
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
+
+                AlertDialog.Builder(this@MainActivity)
+                    .setTitle("${getString(R.string.app_name)}需要悬浮窗权限")
+                    .setPositiveButton(
+                        "去开启"
+                    ) { dialog, _ ->
+                        dialog.dismiss()
+                        val intent = Intent(
+                            Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:$packageName")
+                        )
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                    }
+                    .show()
+
             } else {
                 startService(Intent(this@MainActivity, FloatViewService::class.java))
                 goHome()
             }
+        } else {
+            startService(Intent(this@MainActivity, FloatViewService::class.java))
+            goHome()
         }
     }
-
 
 }
