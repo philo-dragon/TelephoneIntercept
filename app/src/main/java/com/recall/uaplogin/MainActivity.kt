@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         var hasAllPermission = true
         for (permission in permissions) {
             if(!permission.isGranted){
-                hasAllPermission
+                hasAllPermission = false
                 break
             }
         }
